@@ -1,6 +1,7 @@
 <?php
 
 namespace Chsv\Guess;
+
 /**
  * Class that handles guesses in game guess my number
  */

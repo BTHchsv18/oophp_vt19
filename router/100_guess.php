@@ -52,14 +52,14 @@ $app->router->get("guess/play", function () use ($app) {
 
      $number = null;
 
-     // Check what button has been clicked
-     if ($restart) {
-         return $app->response->redirect("guess/init");
-     } elseif ($makeguess != null && is_numeric($userguessvalue)) {
-         $result = $_SESSION["guess"]->checkguess($userguessvalue);
-     } else if ($cheat) {
-         $number = $_SESSION["guess"]->getnumber();
-     }
+    // Check what button has been clicked
+    if ($restart) {
+        return $app->response->redirect("guess/init");
+    } elseif ($makeguess != null && is_numeric($userguessvalue)) {
+        $result = $_SESSION["guess"]->checkguess($userguessvalue);
+    } else if ($cheat) {
+        $number = $_SESSION["guess"]->getnumber();
+    }
 
      // Get number of tries left
      $triesleft = $_SESSION["guess"]->gettriesleft();

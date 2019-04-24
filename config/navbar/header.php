@@ -30,11 +30,6 @@ return [
                         "url" => "redovisning/kmom02",
                         "title" => "Redovisning för kmom02.",
                     ],
-                    [
-                        "text" => "Kmom03",
-                        "url" => "redovisning/kmom03",
-                        "title" => "Redovisning för kmom03.",
-                    ],
                 ],
             ],
         ],
@@ -64,9 +59,14 @@ return [
             "title" => "Anax development utilities",
         ],
         [
-            "text" => "Gissaspelet",
+            "text" => "Gissa",
             "url" => "guess-game",
-            "title" => "Spela gissa nummer",
+            "title" => "Gissas",
+        ],
+        [
+            "text" => "Tärning",
+            "url" => "dice-game",
+            "title" => "Tärning",
         ],
     ],
 ];
