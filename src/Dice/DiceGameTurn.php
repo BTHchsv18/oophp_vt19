@@ -11,10 +11,11 @@ class DiceGameTurn extends DiceGame
      * EGENSKAPER
      */
 
-    // Last points
     // Total points in turn
     protected $currentPlayer;
+    protected $turnScore;
     protected $totalScore;
+    protected $noOfDice;
     protected $lastHand;
 
     /**
@@ -22,27 +23,81 @@ class DiceGameTurn extends DiceGame
      *
      * @param
      */
-    public function __construct($player)
+    public function __construct(int $player = 0, int $noOfDice = 3)
     {
-        $totalScore = 0;
+        $this->turnScore = 0;
+        $this->totalScore = 0;
         $this->currentPlayer = $player;
+        $this->noOfDice = $noOfDice;
     }
 
-    public function newTry()
-    {
-
-    }
 
     /**
-     * Collect turn Points
+     * Player plays
      *
-     * @param int  $player current player
-     * @return void
+     * @return string
      */
-    public function collectTurnPoints()
+    public function playerHand()
     {
+        $resultsGraphic = [];
+        $rollOne = false;
+        $throws = 0;
+
+        $hand = new DiceHand($this->noOfDice);
+        $roll = $hand->values();
+        $this->lastHand = $hand->graphic();
+
+        for ($i = 0; $i < sizeof($roll); $i++) {
+            if ($roll[$i] === 1) {
+                $rollOne = true;
+            }
+        }
+
+       if ($rollOne === false) {
+           $this->turnScore += $hand->sum();
+       } else {
+           $this->turnScore = 0;
+       }
+
+        return $rollOne;
 
     }
 
+
+    /**
+     * Computer plays
+     *
+     * @return string
+     */
+    public function simulatedTurn()
+    {
+        $resultsGraphic = [];
+        $rollOne = false;
+        $noOfThrows = 0;
+        $this->turnScore = 0;
+
+        do {
+            $hand = new DiceHand($this->noOfDice);
+            $roll = $hand->values();
+
+            for ($i = 0; $i < sizeof($roll); $i++) {
+                if ($roll[$i] === 1) {
+                    $rollOne = true;
+                }
+            }
+
+            if ($rollOne === false) {
+                $this->turnScore += $hand->sum();
+            }
+
+            $resultsGraphic[] = $hand->graphic();
+            $noOfThrows++;
+        } while ($noOfThrows < 3 && $rollOne === false);
+
+        if ($rollOne === true) {
+            $this->turnScore = 0;
+        }
+        return $resultsGraphic;
+    }
 
 }

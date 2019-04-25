@@ -40,24 +40,4 @@ class Dice extends DiceHand
         return $this->sides;
     }
 
-    /**
-     * Throw a dice
-     *
-     * @return int result of dicethrow
-     */
-    public function throwDice()
-    {
-        $this->lastRoll = rand(1, $this->sides);
-        return $this->lastRoll;
-    }
-
-    /**
-     * Get last result
-     *
-     * @return int result of dicethrow
-     */
-    public function getLastRoll()
-    {
-        return $this->lastRoll;
-    }
 }
