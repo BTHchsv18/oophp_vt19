@@ -10,13 +10,11 @@ class DiceGame
     /**
      * Object properties
      */
-     protected $currentTurn;
-     protected $players = [];
      protected $noOfDice;
+     protected $players = [];
      protected $standings = [];
      protected $currentPlayer;
      protected $lastHand;
-     protected $turnScore = 0; //place in object
 
      /**
       * Constructor
@@ -29,13 +27,17 @@ class DiceGame
      public function __construct(string $playerName = 'player', int $diceCount = 5, int $opponents = 1)
      {
          $this->players[0] = $playerName;
+
          for ($i=1; $i<=$opponents; $i++) {
              $this->players[$i] = 'Computer '. $i;
          }
+
          $this->noOfDice = $diceCount;
+
          for ($i=0; $i<sizeof($this->players); $i++) {
              $this->standings[$i] = 0;
          }
+
          $this->currentPlayer = rand(0, count($this->players)-1);
      }
 
@@ -45,83 +47,16 @@ class DiceGame
       *
       * @return void
       */
-     public function nextGameTurn()
+     public function nextPlayer()
      {
          $this->currentPlayer++;
+
          if ($this->currentPlayer >= sizeof($this->players))
          {
              $this->currentPlayer = 0;
          }
-         $this->currentTurn = new DiceGameTurn($this->currentPlayer, $this->noOfDice);
-     }
 
-
-     /**
-      * Player plays
-      *
-      * @return string
-      */
-     public function playerPlays()
-     {
-         $result = $this->currentTurn->playerHand();
-         return $result;
-     }
-
-
-     /**
-      * Computer plays
-      *
-      * @return string
-      */
-     public function computerPlays()
-     {
-         $result = $this->currentTurn->simulatedTurn();
-         $this->addPlayerScore();
-         return $result;
-     }
-
-
-     /**
-      * get results from last hand (values)
-      *
-      * @return string
-      */
-     public function getLastHand()
-     {
-         return $this->currentTurn->lastHand;
-     }
-
-
-     /**
-      * Get score from last turn
-      *
-      * @return int score
-      */
-     public function getLastScore()
-     {
-        return $this->currentTurn->turnScore;
-     }
-
-
-     /**
-      * Add players score
-      *
-      * @return void
-      */
-     public function addPlayerScore()
-     {
-         $this->standings[$this->currentTurn->currentPlayer] += $this->currentTurn->turnScore;
-     }
-
-
-     /**
-      * Get no of dice in current game
-      *
-      * @return int
-      */
-     public function getNoOfDice()
-     {
-         return $this->noOfDice;
+         $this->currentTurn = new DiceGameTurn();
      }
 
 
@@ -135,28 +70,117 @@ class DiceGame
          return $this->currentPlayer;
      }
 
+
+
      /**
-      * Get current players name
+      * Computer plays
       *
-      * @return string
+      * @return boolean
       */
-     public function getCurrentPlayerName()
+     public function computerPlays()
      {
-         return $this->players[$this->currentPlayer];
+         $rollOne = false;
+         $noOfThrows = 0;
+         $won = false;
+
+         do {
+             $hand = new DiceHand($this->noOfDice);
+             $this->currentTurn->addHand($hand->graphic());
+             $rollOne = $hand->handContainsOne();
+             $noOfThrows++;
+             $this->currentTurn->addScore($hand->sum());
+         } while ($noOfThrows < 3 && $rollOne === false);
+
+         if ($rollOne === true) {
+             $this->currentTurn->zeroScore();
+         }
+         $won = $this->updateStandings();
+
+         return $won;
      }
+
+
+
+     /**
+      * Player plays
+      *
+      * @return boolean
+      */
+     public function playerPlays()
+     {
+         $hand = new DiceHand($this->noOfDice);
+         $this->currentTurn->addHand($hand->graphic());
+         $rollOne = $hand->handContainsOne();
+
+         if ($rollOne === true) {
+             $this->currentTurn->zeroScore();
+         } else {
+             $this->currentTurn->addScore($hand->sum());
+         }
+
+         return $rollOne;
+     }
+
+
+
+     /**
+      * Get acumulated score from last turn
+      *
+      * @return int score
+      */
+     public function updateStandings()
+     {
+         $won = false;
+         $this->standings[$this->currentPlayer] += $this->currentTurn->getTurnScore();
+         if ($this->standings[$this->currentPlayer] > 99) {
+             $won = true;
+         }
+
+         return $won;
+     }
+
 
      /**
       * Get currents standings
       *
-      * @return int no of sides
+      * @return array
       */
      public function getCurrentStandings()
      {
-        $standings = [];
+        $scores = [];
         for ($i = 0; $i < sizeof($this->players); $i++) {
-            $standings[$i] = $this->players[$i] . ": " . $this->standings[$i];
+            $scores[$i] = $this->players[$i] . ": " . $this->standings[$i];
         }
-        return $standings;
+        return $scores;
      }
 
+
+     /**
+      * Get current Game data for showing in view
+      *
+      * @return array
+      */
+     public function gameData()
+     {
+         $turn = $this->currentPlayer;
+         if ($turn === 0) {
+             $currentPlayerName = "du";
+         } else {
+             $currentPlayerName = $this->players[$turn];
+         }
+         $resultsFromLastTurn = $this->currentTurn->getHandHistory() ?? [''];
+         $scoreFromLastTurn = $this->currentTurn->getTurnScore();
+         $standings = $this->getCurrentStandings();
+
+         $data = [
+          'title' => "100 Dice",
+          'turn' => $turn,
+          'lastPlayer' => $currentPlayerName,
+          'lastTurnResults' => $resultsFromLastTurn,
+          'lastTurnScore' => $scoreFromLastTurn,
+          'standings' => $standings
+         ];
+
+         return $data;
+     }
 }

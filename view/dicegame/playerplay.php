@@ -9,40 +9,38 @@ namespace Anax\View;
 
     <div class="dice-game-buttons">
         <p>
-        <form method="post" action="roll">
-            <input type="submit" name="gameaction" value="Roll" class="dice-submit">
+        <form method="get" action="roll">
+            <input type="submit" name="gameaction" value="Kasta tärningar" class="dice-submit">
         </form>
         </p>
         <p>
         <form method="get" action="stand">
-            <input type="submit" name="gameaction" value="Stand" class="dice-submit">
+            <input type="submit" name="gameaction" value="Stanna" class="dice-submit">
         </form>
         </p>
         <p>
         <form method="get" action="setup">
-            <input type="submit" name="gameaction" value="Restart" class="dice-submit">
+            <input type="submit" name="gameaction" value="Starta om" class="dice-submit">
         </form>
         </p>
     </div>
     <div class="dice-game-info">
 
-        <?php if(isset($results)) { ?>
+        <?php if(isset($lastTurnResults) && count($lastTurnResults) != 0) { ?>
+            <?php $lastTurnResults = $lastTurnResults[max(array_keys($lastTurnResults))]; ?>
+            <p>Du slog:</p>
             <p>
-                Du slog:
-            </p>
-            <p>
-            <?php foreach ($results as $value) : ?>
-                <i class="dice-sprite <?= $value ?>"></i>
-            <?php endforeach; ?>
+                <?php foreach ($lastTurnResults as $value) : ?>
+                    <i class="dice-sprite <?= $value ?>"></i>
+                <?php endforeach; ?>
             </p>
         <?php } ?>
 
         <p>
             <?php if (isset($turnscore)) echo $turnscore . " poäng. Stanna?" ?>
         </p>
-        <p>
-            Din tur
-        </p>
+        <p>Din tur</p>
+        <p>Stanna eller kasta tärningar?</p>
     </div>
 
     <div class="dice-game-standings">

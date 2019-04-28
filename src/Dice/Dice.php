@@ -5,7 +5,7 @@ namespace Chsv\Dice;
 /**
  * Bla bla dice class
  */
-class Dice extends DiceHand
+class Dice
 {
     /**
      * @var integer $sides  Number of sides

@@ -24,12 +24,10 @@ $app->router->post("dicegame/init", function () use ($app) {
 
     if ($_POST['playername'] && $_POST['noofdice'] && $_POST['noofcomp']) {
 
-        // Typecast and save postvariables
         $playerName = $_POST['playername'];
         $noOfDice = (int)$_POST['noofdice'];
         $noOfOpponents = (int)$_POST['noofcomp'];
 
-        // Create new instance of game object and store in session.
         $_SESSION['dicegame'] = new DiceGame($playerName, $noOfDice, $noOfOpponents);
 
         return $app->response->redirect("dicegame/handleturn");
@@ -44,61 +42,58 @@ $app->router->post("dicegame/init", function () use ($app) {
 * Handle player turn. Sets next player's turn each time route is called.
 */
 $app->router->get("dicegame/handleturn", function () use ($app) {
-
-    $_SESSION['dicegame']->nextGameTurn();
+    $_SESSION['dicegame']->nextPlayer();
     $currentPlayer = $_SESSION['dicegame']->getCurrentPlayerNo();
-
-    if ($currentPlayer === 0) {
-        return $app->response->redirect("dicegame/playersturn");
-    } else {
+    if ($currentPlayer > 0) {
         return $app->response->redirect("dicegame/computersturn");
+    } else {
+        return $app->response->redirect("dicegame/playersturn");
     }
 });
 
 
 
 /**
-* Computers turn.
+* Computers turn. Called when it's any of computerized players turn
 */
 $app->router->get("dicegame/computersturn", function () use ($app) {
-    $results = $_SESSION['dicegame']->computerPlays();
-    $turnScore = $_SESSION['dicegame']->getLastScore();
-    $data = getBaseData();
-    $data['results'] = $results;
-    $data['turnscore'] = $turnScore;
-    $app->page->add("dicegame/computerplay", $data);
+    $won = $_SESSION['dicegame']->computerPlays();
+    $data = $_SESSION['dicegame']->gameData();
+    if ($won === true) {
+        $app->page->add("dicegame/endgame", $data);
+    } else {
+        $app->page->add("dicegame/showresult", $data);
+    }
     return $app->page->render();
 });
 
 
+
 /**
-* players turn. Render view
+* Players turn. Rolls dice and renders view to show gme buttons.
 */
 $app->router->get("dicegame/playersturn", function () use ($app) {
-        $data = getBaseData();
-        $app->page->add("dicegame/playerplay", $data);
-        $app->page->add("dicegame/debug", $data);
-        return $app->page->render();
+    $data = $_SESSION['dicegame']->gameData();
+    $app->page->add("dicegame/playerplay", $data);
+    return $app->page->render();
 });
+
 
 
 /**
 * Handle dice roll. Player chose to roll die
 */
-$app->router->post("dicegame/roll", function () use ($app) {
-    $rollOne = $_SESSION['dicegame']->playerPlays();
-    $data = getBaseData();
-    $data['results'] = $_SESSION['dicegame']->getLastHand();
-    $data['turnscore'] = $_SESSION['dicegame']->getLastScore();
+$app->router->get("dicegame/roll", function () use ($app) {
 
-    if ($rollOne === true) {
-        $app->page->add("dicegame/playerfail", $data);
-        $app->page->add("dicegame/debug", $data);
+    $rolledOne = $_SESSION['dicegame']->playerPlays();
+
+    if ($rolledOne === true) {
+        $data = $_SESSION['dicegame']->gameData();
+        $app->page->add("dicegame/showresult", $data);
     } else {
+        $data = $_SESSION['dicegame']->gameData();
         $app->page->add("dicegame/playerplay", $data);
-        $app->page->add("dicegame/debug", $data);
     }
-
     return $app->page->render();
 });
 
@@ -107,24 +102,41 @@ $app->router->post("dicegame/roll", function () use ($app) {
 * Handle player stands = collecting points
 */
 $app->router->get("dicegame/stand", function () use ($app) {
-    $_SESSION['dicegame']->addPlayerScore();
-    return $app->response->redirect("dicegame/handleturn");
+    $won = $_SESSION['dicegame']->updateStandings();
+    $data = $_SESSION['dicegame']->gameData();
+    if ($won === true) {
+        $app->page->add("dicegame/endgame", $data);
+    } else {
+        $app->page->add("dicegame/showresult", $data);
+    }
+    return $app->page->render();
 });
 
 
 /**
 * Function for setting up basic data for view rendering
 */
-function getBaseData() {
-    $turn = $_SESSION["dicegame"]->getCurrentPlayerNo();
-    $currentPlayerName = $_SESSION["dicegame"]->getCurrentPlayerName();
-    $standings = $_SESSION["dicegame"]->getCurrentStandings();
-
-    $data = [
-     'title' => "100 Dice",
-     'playerTurn' => $currentPlayerName,
-     'standings' => $standings
-    ];
-
+function getGameData() {
+    $data = $_SESSION['dicegame']->gameData();
     return $data;
+    // $turn = $_SESSION["dicegame"]->getCurrentPlayerNo();
+    // if ($turn === 0) {
+    //     $currentPlayerName = "du";
+    // } else {
+    //     $currentPlayerName = $_SESSION["dicegame"]->getCurrentPlayerName();
+    // }
+    // $resultsFromLastTurn = $_SESSION["dicegame"]->getResultsFomLastTurn();
+    // $scoreFromLastTurn = $_SESSION["dicegame"]->getScoreFromLastTurn();
+    // $standings = $_SESSION["dicegame"]->getCurrentStandings();
+    //
+    // $data = [
+    //  'title' => "100 Dice",
+    //  'turn' => $turn,
+    //  'lastPlayer' => $currentPlayerName,
+    //  'lastTurnResults' => $resultsFromLastTurn,
+    //  'lastTurnScore' => $scoreFromLastTurn,
+    //  'standings' => $standings
+    // ];
+    //
+    // return $data;
 }

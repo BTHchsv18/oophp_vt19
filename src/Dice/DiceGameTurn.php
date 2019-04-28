@@ -5,99 +5,79 @@ namespace Chsv\Dice;
 /**
  * Bla bla dice class
  */
-class DiceGameTurn extends DiceGame
+class DiceGameTurn
 {
     /**
      * EGENSKAPER
      */
 
-    // Total points in turn
-    protected $currentPlayer;
+    protected $turnHistory;
     protected $turnScore;
-    protected $totalScore;
-    protected $noOfDice;
-    protected $lastHand;
 
     /**
      * Constructor
      *
      * @param
      */
-    public function __construct(int $player = 0, int $noOfDice = 3)
+    public function __construct()
     {
         $this->turnScore = 0;
-        $this->totalScore = 0;
-        $this->currentPlayer = $player;
-        $this->noOfDice = $noOfDice;
+        $this->turnHistory=  [];
     }
 
 
     /**
-     * Player plays
+     * Adds played hand to turn history
      *
-     * @return string
+     * @return void
      */
-    public function playerHand()
+    public function addHand($lastHand)
     {
-        $resultsGraphic = [];
-        $rollOne = false;
-        $throws = 0;
-
-        $hand = new DiceHand($this->noOfDice);
-        $roll = $hand->values();
-        $this->lastHand = $hand->graphic();
-
-        for ($i = 0; $i < sizeof($roll); $i++) {
-            if ($roll[$i] === 1) {
-                $rollOne = true;
-            }
-        }
-
-       if ($rollOne === false) {
-           $this->turnScore += $hand->sum();
-       } else {
-           $this->turnScore = 0;
-       }
-
-        return $rollOne;
-
+        $this->turnHistory[] = $lastHand;
     }
 
 
     /**
-     * Computer plays
+     * Adds score to accumulated turn score
      *
-     * @return string
+     * @return void
      */
-    public function simulatedTurn()
+    public function zeroScore()
     {
-        $resultsGraphic = [];
-        $rollOne = false;
-        $noOfThrows = 0;
         $this->turnScore = 0;
+    }
 
-        do {
-            $hand = new DiceHand($this->noOfDice);
-            $roll = $hand->values();
 
-            for ($i = 0; $i < sizeof($roll); $i++) {
-                if ($roll[$i] === 1) {
-                    $rollOne = true;
-                }
-            }
+    /**
+     * Adds score to accumulated turn score
+     *
+     * @return void
+     */
+    public function addScore($handScore)
+    {
+        $this->turnScore += $handScore;
+    }
 
-            if ($rollOne === false) {
-                $this->turnScore += $hand->sum();
-            }
 
-            $resultsGraphic[] = $hand->graphic();
-            $noOfThrows++;
-        } while ($noOfThrows < 3 && $rollOne === false);
+    /**
+     * get hands played in turn
+     *
+     * @return array
+     */
+    public function getHandHistory()
+    {
+        return $this->turnHistory;
+    }
 
-        if ($rollOne === true) {
-            $this->turnScore = 0;
-        }
-        return $resultsGraphic;
+
+    /**
+     * gets total score acumulated in turn
+     *
+     * @return int
+     */
+    public function getTurnScore()
+    {
+        return $this->turnScore;
     }
 
 }

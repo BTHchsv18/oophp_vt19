@@ -2,14 +2,6 @@
 
 namespace Anax\View;
 
-/**
- * Render content within an article.
- */
-
-// Show incoming variables and view helper functions
-//echo showEnvironment(get_defined_vars(), get_defined_functions());
-
-
 ?>
 <h1>Dice 100</h1>
 <div class="dice-game-container">
@@ -21,22 +13,28 @@ namespace Anax\View;
         </p>
         <p>
         <form method="get" action="setup">
-            <input type="submit" name="gameaction" value="Restart" class="dice-submit">
+            <input type="submit" name="gameaction" value="Starta om" class="dice-submit">
         </form>
         </p>
     </div>
     <div class="dice-game-info">
-        <p>
-            <?php if(isset($results)) { ?>
-                <?php foreach ($results as $row) : ?>
-                    <p><?php if (isset($playerTurn)) echo $playerTurn . " slog:"?></p>
+            <?php if(isset($lastTurnResults)  && count($lastTurnResults) != 0) { ?>
+                <p>
+                    <?= $lastPlayer ?> slog följande <?= count($lastTurnResults) ?> händer
+                    och stannade med <?= $lastTurnScore ?> poäng.
+                </p>
+                <?php foreach ($lastTurnResults as $row) : ?>
+                    <p>------------------------------</p>
+                    <p>
                     <?php foreach ($row as $value) : ?>
-                    <i class="dice-sprite <?= $value ?>"></i>
+                        <i class="dice-sprite <?= $value ?>"></i>
                     <?php endforeach; ?>
+                    </p>
             <?php endforeach; ?>
-            <p>och stannade med <?= $turnscore ?> poäng.</p>
-            <?php } ?>
-        </p>
+        <?php } else { ?>
+            <p>Du slog inga tärningar och fick därför inga poäng.</p>
+        <?php } ?>
+        <p>Klicka på Fortsätt för att låta nästa spelare kasta.</p>
     </div>
 
     <div class="dice-game-standings">

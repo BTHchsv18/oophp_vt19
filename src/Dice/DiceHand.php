@@ -5,7 +5,7 @@ namespace Chsv\Dice;
 /**
  * A dicehand, consisting of dices.
  */
-class DiceHand extends DiceGame
+class DiceHand
 {
     /**
      * @var Dice $dices   Array consisting of dices.
@@ -33,6 +33,35 @@ class DiceHand extends DiceGame
     }
 
     /**
+     * Check if last hand contains one ore more 1
+     *
+     * @return array with values of the last roll.
+     */
+    public function handContainsOne()
+    {
+        $check = false;
+
+        for ($i=0; $i<count($this->values); $i++) {
+            if ($this->values[$i] === 1) {
+                $check = true;
+            }
+        }
+        
+        return $check;
+    }
+
+    /**
+     * Get values of dices from last roll.
+     *
+     * @return array with values of the last roll.
+     */
+    public function values()
+    {
+        return $this->values;
+    }
+
+
+    /**
      * Get graphic values of last hand
      *
      * @return array of graphical representation of last rolled dice.
@@ -50,31 +79,22 @@ class DiceHand extends DiceGame
     }
 
     /**
-     * Get values of dices from last roll.
+     * Check if hand contains 1
      *
-     * @return bool with values of the last roll.
+     * @return bool
      */
     public function checkFail()
     {
         $check = false;
+
         for ($i=0; $i<count($this->values); $i++) {
             if ($this->values[$i] === 1) {
                 $check = true;
             }
         }
+
         return $check;
     }
-
-    /**
-     * Get values of dices from last roll.
-     *
-     * @return array with values of the last roll.
-     */
-    public function values()
-    {
-        return $this->values;
-    }
-
 
     /**
      * Get the sum of all dices.

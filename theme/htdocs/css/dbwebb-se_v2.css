@@ -6643,7 +6643,7 @@ a.rm-button.rm-clicked .rm-button-face-2 {
   margin: 0 4px 0 0;
   width: 32px;
   height: 32px;
-  background: url(../img/dice-faces.jpg) no-repeat;
+  background: url(../img/dice-faces2.jpg) no-repeat;
 }
 .dice-sprite.dice-1 {
   background-position: -160px 0;
@@ -6664,18 +6664,24 @@ a.rm-button.rm-clicked .rm-button-face-2 {
   background-position: 0 0;
 }
 .dice-game-container {
+  min-height: 450px;
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: space-between;
+  align-items: stretch;
 }
 .dice-game-info {
   width: 30%;
+  min-height: 98%;
   border: 1px solid #898989;
   border-radius: 6px;
   text-align: center;
+  padding: 5px;
+  background-color: #c0c0c0;
 }
 .dice-game-buttons {
   width: 30%;
+  min-height: 98%;
   border: 1px solid #898989;
   border-radius: 6px;
   text-align: center;
@@ -6690,6 +6696,7 @@ a.rm-button.rm-clicked .rm-button-face-2 {
 }
 .dice-game-standings {
   width: 30%;
+  min-height: 98%;
   border: 1px solid #898989;
   border-radius: 6px;
   padding-left: 15px;
