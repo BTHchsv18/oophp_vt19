@@ -11,7 +11,6 @@ class Dice
      * @var integer $sides  Number of sides
      */
     private $sides;
-    private $lastRoll;
 
     /**
      * Constructor to create a Dice
@@ -39,5 +38,4 @@ class Dice
     {
         return $this->sides;
     }
-
 }

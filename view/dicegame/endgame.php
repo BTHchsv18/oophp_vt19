@@ -20,13 +20,13 @@ namespace Anax\View;
     <div class="dice-game-standings">
         <p><b>Standings</b></p>
         <?php
-            if(isset($standings)) {
-                foreach ($standings as $row) :
-        ?>
-                    <p><?= $row ?></p>
-        <?php
-                endforeach;
-            }
+        if (isset($standings)) {
+            foreach ($standings as $row) :
+                ?>
+                <p><?= $row ?></p>
+                <?php
+            endforeach;
+        }
         ?>
     </div>
 </div>

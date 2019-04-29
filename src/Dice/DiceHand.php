@@ -46,7 +46,7 @@ class DiceHand
                 $check = true;
             }
         }
-        
+
         return $check;
     }
 
@@ -75,26 +75,9 @@ class DiceHand
         }
 
         return $graphicValues;
-
     }
 
-    /**
-     * Check if hand contains 1
-     *
-     * @return bool
-     */
-    public function checkFail()
-    {
-        $check = false;
 
-        for ($i=0; $i<count($this->values); $i++) {
-            if ($this->values[$i] === 1) {
-                $check = true;
-            }
-        }
-
-        return $check;
-    }
 
     /**
      * Get the sum of all dices.
@@ -105,6 +88,4 @@ class DiceHand
     {
         return array_sum($this->values);
     }
-
-
 }

@@ -26,7 +26,7 @@ namespace Anax\View;
     </div>
     <div class="dice-game-info">
 
-        <?php if(isset($lastTurnResults) && count($lastTurnResults) != 0) { ?>
+        <?php if (isset($lastTurnResults) && count($lastTurnResults) != 0) { ?>
             <?php $lastTurnResults = $lastTurnResults[max(array_keys($lastTurnResults))]; ?>
             <p>Du slog:</p>
             <p>
@@ -36,9 +36,6 @@ namespace Anax\View;
             </p>
         <?php } ?>
 
-        <p>
-            <?php if (isset($turnscore)) echo $turnscore . " poäng. Stanna?" ?>
-        </p>
         <p>Din tur</p>
         <p>Stanna eller kasta tärningar?</p>
     </div>
@@ -46,13 +43,13 @@ namespace Anax\View;
     <div class="dice-game-standings">
         <p><b>Standings</b></p>
         <?php
-            if(isset($standings)) {
-                foreach ($standings as $row) :
-        ?>
-                    <p><?= $row ?></p>
-        <?php
-                endforeach;
-            }
+        if (isset($standings)) {
+            foreach ($standings as $row) :
+                ?>
+                <p><?= $row ?></p>
+                <?php
+            endforeach;
+        }
         ?>
     </div>
 </div>

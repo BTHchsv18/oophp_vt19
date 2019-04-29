@@ -18,7 +18,7 @@ namespace Anax\View;
         </p>
     </div>
     <div class="dice-game-info">
-            <?php if(isset($lastTurnResults)  && count($lastTurnResults) != 0) { ?>
+            <?php if (isset($lastTurnResults)  && count($lastTurnResults) != 0) { ?>
                 <p>
                     <?= $lastPlayer ?> slog följande <?= count($lastTurnResults) ?> händer
                     och stannade med <?= $lastTurnScore ?> poäng.
@@ -30,23 +30,23 @@ namespace Anax\View;
                         <i class="dice-sprite <?= $value ?>"></i>
                     <?php endforeach; ?>
                     </p>
-            <?php endforeach; ?>
-        <?php } else { ?>
+                <?php endforeach; ?>
+            <?php } else { ?>
             <p>Du slog inga tärningar och fick därför inga poäng.</p>
-        <?php } ?>
+            <?php } ?>
         <p>Klicka på Fortsätt för att låta nästa spelare kasta.</p>
     </div>
 
     <div class="dice-game-standings">
         <p><b>Standings</b></p>
         <?php
-            if(isset($standings)) {
-                foreach ($standings as $row) :
-        ?>
-                    <p><?= $row ?></p>
-        <?php
-                endforeach;
-            }
+        if (isset($standings)) {
+            foreach ($standings as $row) :
+                ?>
+                <p><?= $row ?></p>
+                <?php
+            endforeach;
+        }
         ?>
     </div>
 </div>
