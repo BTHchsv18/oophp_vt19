@@ -15,7 +15,17 @@ class DiceTest extends TestCase
     public function testCreateDiceObject()
     {
         $test = new Dice();
-        $this->assertInstanceOf("\Chsv18\Dice\Dice", $test);
+        $this->assertInstanceOf("\Chsv\Dice\Dice", $test);
+    }
+
+    /**
+     *
+     */
+    public function testCreateDiceObjectPositiveSides()
+    {
+        $test = new Dice();
+        $res = $test->getNoOfSides();
+        $this->assertGreaterThan(0, $res);
     }
 
     /**
@@ -27,5 +37,4 @@ class DiceTest extends TestCase
         $res = $test->getNoOfSides();
         $this->assertInternalType("int", $res);
     }
-
 }

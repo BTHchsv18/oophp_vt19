@@ -35,7 +35,7 @@ class DiceHand
     /**
      * Check if last hand contains one ore more 1
      *
-     * @return array with values of the last roll.
+     * @return boolean
      */
     public function handContainsOne()
     {

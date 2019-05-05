@@ -9,11 +9,72 @@ use PHPUnit\Framework\TestCase;
  */
 class GameTest extends TestCase
 {
-    /**
-     * Just assert something is true.
-     */
-    public function testTrue()
+    public function testCreateTurnObject()
     {
-        $this->assertTrue(true);
+        $test = new DiceGame();
+        $this->assertInstanceOf("\Chsv\Dice\DiceGame", $test);
+    }
+
+
+    public function testnextPlayer()
+    {
+        $test = new DiceGame();
+        $res = $test->nextPlayer();
+        $this->assertNull($res);
+    }
+
+
+
+    public function testgetCurrentPlayerNo()
+    {
+        $test = new DiceGame();
+        $res = $test->getCurrentPlayerNo();
+        $this->assertInternalType("int", $res);
+    }
+
+
+    public function testcomputerPlays()
+    {
+        $test = new DiceGame();
+        $test->nextPlayer();
+        $res = $test->computerPlays();
+        $this->assertInternalType("boolean", $res);
+    }
+
+
+    public function testplayerPlays()
+    {
+        $test = new DiceGame();
+        $test->nextPlayer();
+        $res = $test->playerPlays();
+        $this->assertInternalType("boolean", $res);
+    }
+
+
+
+    public function testupdateStandings()
+    {
+        $test = new DiceGame();
+        $test->nextPlayer();
+        $res = $test->updateStandings();
+        $this->assertInternalType("boolean", $res);
+    }
+
+
+
+    public function testgetCurrentStandings()
+    {
+        $test = new DiceGame();
+        $test->nextPlayer();
+        $res = $test->getCurrentStandings();
+        $this->assertInternalType("array", $res);
+    }
+
+
+    public function testgameData() {
+        $test = new DiceGame();
+        $test->nextPlayer();
+        $res = $test->gameData();
+        $this->assertInternalType("array", $res);
     }
 }

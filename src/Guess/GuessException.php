@@ -6,6 +6,6 @@ namespace Chsv\Guess;
 /**
  * Minimal comment
  */
-class GuessException extends Exception
+class GuessException extends \Exception
 {
 }
