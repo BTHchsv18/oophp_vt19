@@ -1,13 +1,13 @@
 <?php
 
-namespace Anax;
+namespace Chsv\Dice;
 
 use PHPUnit\Framework\TestCase;
 
 /**
  * Example test class.
  */
-class ExampleTest extends TestCase
+class HandTest extends TestCase
 {
     /**
      * Just assert something is true.
