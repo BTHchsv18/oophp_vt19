@@ -28,8 +28,6 @@ class DiceHand
             $this->dices[$i]  = new Dice();
             $this->values[$i] = rand(1, $this->dices[$i]->getNoOfSides());
         }
-
-        $_SESSION['testvariable-2'] = $noofdice;
     }
 
     /**

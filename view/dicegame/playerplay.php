@@ -51,5 +51,19 @@ namespace Anax\View;
             endforeach;
         }
         ?>
+        <p><b>Game stats</b></p>
+        <?php
+        $counter = 1;
+        foreach ($histoGramStats as $row) :
+            echo $counter . ":";
+            for ($i=0; $i<$row; $i++) {
+                echo "*";
+            }
+            ?>
+        <br>
+            <?php
+            $counter++;
+        endforeach;
+        ?>
     </div>
 </div>

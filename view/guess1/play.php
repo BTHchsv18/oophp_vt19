@@ -11,7 +11,7 @@ namespace Anax\View;
 
 
 ?>
-<h1>Guess my number (V. 1.0)</h1>
+<h1>Guess my number (Controller)</h1>
 <p>Guess a number between  and 100, you have <?= $triesleft ?> left.</p>
 
 <!-- IF Button value = cheat - echo cheat -->

@@ -71,7 +71,8 @@ class GameTest extends TestCase
     }
 
 
-    public function testgameData() {
+    public function testgameData()
+    {
         $test = new DiceGame();
         $test->nextPlayer();
         $res = $test->gameData();

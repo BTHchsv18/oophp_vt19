@@ -5,8 +5,10 @@ namespace Chsv\Dice;
 /**
  * Bla bla dice class
  */
-class DiceGame
+class DiceGame implements DiceHistogramInterface
 {
+    use HistogramTrait;
+
     /**
      * Object properties
      */
@@ -17,14 +19,14 @@ class DiceGame
     protected $lastHand;
 
     /**
-    * Constructor
+    * ConstructorStandings
     *
     * @param string $playername
     * @param int $noOfDice
     * @param int $opponents
     *
     */
-    public function __construct(string $playerName = 'player', int $diceCount = 5, int $opponents = 1)
+    public function __construct(string $playerName = 'player', int $diceCount = 5, int $diceSides = 6, int $opponents = 1)
     {
         $this->players[0] = $playerName;
 
@@ -33,6 +35,10 @@ class DiceGame
         }
 
         $this->noOfDice = $diceCount;
+
+        for ($i=0; $i<$diceSides; $i++) {
+            $this->histogramStats[$i] = 0;
+        }
 
         for ($i=0; $i<sizeof($this->players); $i++) {
             $this->standings[$i] = 0;
@@ -79,15 +85,21 @@ class DiceGame
     {
         $rollOne = false;
         $noOfThrows = 0;
+        $rollAgain = true;
         $won = false;
+        $res;
 
         do {
             $hand = new DiceHand($this->noOfDice);
+            $res = $hand->values();
+            $this->updateHistogramSerie($res);
             $this->currentTurn->addHand($hand->graphic());
             $rollOne = $hand->handContainsOne();
-            $noOfThrows++;
             $this->currentTurn->addScore($hand->sum());
-        } while ($noOfThrows < 3 && $rollOne === false);
+            $turnScore = $hand->sum();
+            $rollAgain = $this->intelligentPlay($noOfThrows, $turnScore);
+            $noOfThrows++;
+        } while ($rollAgain === true && $rollOne === false);
 
         if ($rollOne === true) {
             $this->currentTurn->zeroScore();
@@ -108,6 +120,8 @@ class DiceGame
     public function playerPlays()
     {
         $hand = new DiceHand($this->noOfDice);
+        $res = $hand->values();
+        $this->updateHistogramSerie($res);
         $this->currentTurn->addHand($hand->graphic());
         $rollOne = $hand->handContainsOne();
 
@@ -121,6 +135,40 @@ class DiceGame
     }
 
 
+    /**
+    * Get acumulated score from last turn
+    *
+    * @return int score
+    */
+    public function intelligentPlay($noOfThrows, $turnScore)
+    {
+        $oppScore = 0;
+        $topScore = 0;
+        $currPlayerScore = $this->standings[$this->currentPlayer] + $turnScore;
+
+        for ($i=0; $i<count($this->standings); $i++) {
+            if ($topScore < $this->standings[$i]) {
+                $topScore = $this->standings[$i];
+            }
+        }
+
+        if ($topScore < $currPlayerScore) {
+            $topScore = $currPlayerScore;
+        }
+
+        $winProximity = 100 - $topScore;
+        $currDiff = $topScore - $currPlayerScore;
+
+        if ($winProximity < 10) {
+            $rollAgain = true;
+        } elseif ($currDiff > 10 && $noOfThrows < 4) {
+            $rollAgain = true;
+        } else {
+            $rollAgain = false;
+        }
+
+        return $rollAgain;
+    }
 
     /**
     * Get acumulated score from last turn
@@ -163,13 +211,14 @@ class DiceGame
     {
         $turn = $this->currentPlayer;
         if ($turn === 0) {
-            $currentPlayerName = "du";
+            $currentPlayerName = "Du";
         } else {
             $currentPlayerName = $this->players[$turn];
         }
-            $resultsFromLastTurn = $this->currentTurn->getHandHistory() ?? [''];
-            $scoreFromLastTurn = $this->currentTurn->getTurnScore();
-            $standings = $this->getCurrentStandings();
+        $resultsFromLastTurn = $this->currentTurn->getHandHistory() ?? [''];
+        $scoreFromLastTurn = $this->currentTurn->getTurnScore();
+        $standings = $this->getCurrentStandings();
+        $hist = $this->histogramStats;
 
         $data = [
             'title' => "100 Dice",
@@ -177,7 +226,8 @@ class DiceGame
             'lastPlayer' => $currentPlayerName,
             'lastTurnResults' => $resultsFromLastTurn,
             'lastTurnScore' => $scoreFromLastTurn,
-            'standings' => $standings
+            'standings' => $standings,
+            'histoGramStats' => $hist,
         ];
 
         return $data;

@@ -36,7 +36,7 @@ class DiceGameTurn
         if (isset($lastHand) && $lastHand != null) {
             $this->turnHistory[] = $lastHand;
         } else {
-            throw new DiceException("ot valid");
+            throw new DiceException("Not valid");
         }
     }
 
@@ -62,7 +62,7 @@ class DiceGameTurn
         if (isset($handScore) && $handScore != null) {
             $this->turnScore += $handScore;
         } else {
-            throw new DiceException("ot valid");
+            throw new DiceException("Not valid");
         }
     }
 

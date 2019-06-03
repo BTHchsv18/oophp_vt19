@@ -2,6 +2,8 @@
 
 namespace Anax\View;
 
+namespace Chsv\Dice;
+
 ?>
 <h1>Dice 100</h1>
 <div class="dice-game-container">
@@ -47,6 +49,20 @@ namespace Anax\View;
                 <?php
             endforeach;
         }
+        ?>
+        <p><b>Game stats</b></p>
+        <?php
+        $counter = 1;
+        foreach ($histoGramStats as $row) :
+            echo $counter . ":";
+            for ($i=0; $i<$row; $i++) {
+                echo "*";
+            }
+            ?>
+        <br>
+            <?php
+            $counter++;
+        endforeach;
         ?>
     </div>
 </div>

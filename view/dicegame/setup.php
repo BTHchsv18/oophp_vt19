@@ -10,7 +10,7 @@ namespace Anax\View;
 //echo showEnvironment(get_defined_vars(), get_defined_functions());
 
 ?>
-<h1>Dice 100. Start a new game!</h1>
+<h1>Dicegame. Start a new game!</h1>
 <p>Select game preferences: </p>
 
 <form method="post" action="init">

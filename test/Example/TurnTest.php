@@ -36,7 +36,7 @@ class TurnTest extends TestCase
     {
         $test = new DiceGameTurn();
         $this->expectException(DiceException::class);
-        $res = $test->addHand("");
+        $test->addHand("");
     }
 
 
@@ -48,7 +48,7 @@ class TurnTest extends TestCase
     {
         $test = new DiceGameTurn();
         $this->expectException(DiceException::class);
-        $res = $test->addScore("");
+        $test->addScore("");
     }
 
 
