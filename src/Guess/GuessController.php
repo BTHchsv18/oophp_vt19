@@ -71,15 +71,15 @@ class GuessController implements AppInjectableInterface
     {
         $title = "Play the game";
 
-        $data = [
-            "triesleft" => $triesleft ?? 5,
-            "cheat" => $cheat ?? null,
-            "number" => $number ?? null,
-            "userguessvalue" => $userguessvalue ?? null,
-            "result" => $result ?? null
-        ];
+        // $data = [
+        //     "triesleft" => $triesleft ?? 5,
+        //     "cheat" => $cheat ?? null,
+        //     "number" => $number ?? null,
+        //     "userguessvalue" => $userguessvalue ?? null,
+        //     "result" => $result ?? null
+        // ];
 
-        $this->app->page->add("guess1/play", $data);
+        //$this->app->page->add("guess1/play", $data);
 
         return $this->app->page->render([
             "title" => $title,

@@ -142,7 +142,6 @@ class DiceGame implements DiceHistogramInterface
     */
     public function intelligentPlay($noOfThrows, $turnScore)
     {
-        $oppScore = 0;
         $topScore = 0;
         $currPlayerScore = $this->standings[$this->currentPlayer] + $turnScore;
 

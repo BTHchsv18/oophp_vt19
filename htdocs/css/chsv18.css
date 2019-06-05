@@ -6649,3 +6649,7 @@ a.rm-button.rm-clicked .rm-button-face-2 {
   border-radius: 6px;
   padding-left: 15px;
 }
+img.thumb {
+  max-width: 100px;
+  max-height: 100px;
+}
