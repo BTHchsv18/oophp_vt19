@@ -95,7 +95,7 @@ return [
         ],
         [
             "text" => "Movies",
-            "url" => "moviedb",
+            "url" => "moviedb/displaymovies",
             "title" => "Movie database",
         ],
     ],

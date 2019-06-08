@@ -6653,3 +6653,22 @@ img.thumb {
   max-width: 100px;
   max-height: 100px;
 }
+.movie-navbar {
+  width: 100%;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+}
+.movie-table {
+  width: 100%;
+  text-align: center;
+  margin-top: 25px;
+}
+.movie-table a,
+.movie-navbar a,
+.movie-table a:visited,
+.movie-navbar a:visited {
+  color: #000;
+  text-decoration: none;
+}
